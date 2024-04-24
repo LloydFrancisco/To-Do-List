@@ -1,14 +1,34 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-    // Define an array of month names
     const showNavbar = (toggleId, navId, bodyId, headerId) =>{
     const toggle = document.getElementById(toggleId),
     nav = document.getElementById(navId),
     bodypd = document.getElementById(bodyId),
     headerpd = document.getElementById(headerId)
+      var toggled = true;
+// Check the screen width
+if (window.innerWidth > 515) {
+  toggle.classList.add('bx-menu');
+  toggle.classList.add('bx-x');
+} else {
+  // If screen width is 515 or less, change class back to 'bx-menu'
+  toggle.classList.add('bx-menu');
+}
+    // Add event listener for window resize
+window.addEventListener('resize', function() {
+
+});
     
     // Validate that all variables exist
     if(toggle && nav && bodypd && headerpd){
     toggle.addEventListener('click', ()=>{
+      //hide filter
+      const list = this.querySelector('.nav_list');
+      list.classList.toggle('d-none');
+      //show authors
+      const author = this.querySelector(".authors");
+      author.classList.toggle('d-block');
+      toggled = false;
+      console.log(toggled);
     // show navbar
     nav.classList.toggle('show')
     // change icon
@@ -92,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
       // Format the date to "YYYY-MM-DD"
       const formattedDate = dateObject.toISOString().split('T')[0];
-      console.log(formattedDate + "format");
       return formattedDate;
   }
   
@@ -112,3 +131,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
       return formattedDate;
   }
   
+
+// Get all elements with class nav_link
+const links = document.querySelectorAll('.nav_link');
+
+// Loop through each element and add event listener
+links.forEach(link => {
+    link.addEventListener('click', function() {
+        // Get the icon element
+        const icon = this.querySelector('.nav_icon');
+
+        // Toggle the rotation class
+        icon.classList.toggle('rotate-90');
+    });
+});

@@ -1,18 +1,6 @@
 // Array to store ToDo objects
 var todoList = [];
 
-var data = new ToDo(
-    generateUniqueId(),
-    "To-Do List App",
-    "LCS BOOTCAMP",
-    "Create a To-Do List App with CRUD Operations without Database.",
-    "April 24, 2024",
-    "Medium"
-);
-
-todoList.push(data);
-displayToDoCards();
-
 // Constructor function for ToDo object
 function ToDo(id, title, category, notes, dueDate, priority) {
     this.id = id;
@@ -23,22 +11,48 @@ function ToDo(id, title, category, notes, dueDate, priority) {
     this.priority = priority;
 }
 
+var data = new ToDo(
+    generateUniqueId(),
+    "To-Do List App",
+    "BOOTCAMP",
+    "Create a To-Do List App with CRUD Operations without Database.",
+    "April 24, 2024",
+    "Medium"
+);
+
+var data1 = new ToDo(
+    generateUniqueId(),
+    "To-Do List App",
+    "BOOTCAMPING",
+    "Create a To-Do List App with CRUD Operations without Database.",
+    "April 25, 2024",
+    "Low"
+);
+
+var data2 = new ToDo(
+    generateUniqueId(),
+    "To-Do List App",
+    "BOOTCAMPdas",
+    "Create a To-Do List App with CRUD Operations without Database.",
+    "May 2, 2024",
+    "High"
+);
+
+todoList.push(data);
+todoList.push(data1);
+todoList.push(data2);
+todoList.push(data1);
+todoList.push(data2);
+todoList.push(data);
+todoList.push(data2);
+displayToDoCards(todoList);
+displayCategories();
+
+
 // Generate unique ID function for ToDo objects
 function generateUniqueId() {
     return Math.random().toString(36).substr(2, 9);
 }
-
-// Get the values of the inputs in the modal
-var title = document.getElementById('todoTitle').value;
-var category = document.getElementById('todoCategory').value;
-var notes = document.getElementById('todoNotes').value;
-var dueDate = document.getElementById('todoDueDate').value;
-var priority = document.querySelector('input[name="todoPriority"]:checked').value;
-
-// Event listener for the "Create" button in the modal
-document.getElementById('createTodoBtn').addEventListener('click', function() {
-    createToDo();
-});
 
 // Function to create a new ToDo object
 function createToDo() {
@@ -48,7 +62,6 @@ function createToDo() {
     var notes = document.getElementById('todoNotes').value;
     var dueDate = document.getElementById('todoDueDate').value;
     var priority = document.querySelector('input[name="todoPriority"]:checked').value;
-
     // Validate the form
     if (!validateForm(title, category, dueDate)) {
         return; // Exit the function if validation fails
@@ -60,7 +73,7 @@ function createToDo() {
         title,
         category,
         notes,
-        dueDate,
+        convertDateFormat(dueDate),
         priority
     );
 
@@ -73,11 +86,16 @@ function createToDo() {
     // clear the form fields after creating the ToDo
     document.getElementById('createTodoForm').reset();
 
-    // Close the modal
-    closeModal("addTodoModal");
+    alert("ToDo created successfully.");
 
     //redisplay todo cards
-    displayToDoCards();
+    displayToDoCards(todoList);
+
+    //reload categories
+    displayCategories();
+
+    // Close the modal
+    closeModal("addTodoModal");
 }
 
 // Function to validate the form inputs
@@ -105,32 +123,45 @@ function validateForm(title, category, dueDate) {
 }
 
 // Function to display ToDo cards
-function displayToDoCards() {
+function displayToDoCards(filteredTodos) {
+    // Sort the filteredTodos array based on dueDate in ascending order
+    filteredTodos.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
     // Get the section where ToDo cards will be displayed
     const section = document.getElementById('todoSection');
 
     // Clear any existing content in the section
     section.innerHTML = '';
 
-    // Iterate over the todoList array
-    todoList.forEach(todo => {
+    // Iterate over the sorted todoList array
+    filteredTodos.forEach(todo => {
         // Create a new ToDo card element
         const todoCard = document.createElement('section');
-        todoCard.classList.add('mb-3');
+
+        // Add classes to the div
+        todoCard.classList.add('todo-card', 'shadow');
+
+        // Set data attributes
+        todoCard.setAttribute('data-toggle', 'modal');
+        todoCard.setAttribute('data-target', '#UDTodoModal');
+        todoCard.setAttribute('data-todo-id', todo.id);
+        todoCard.setAttribute('data-todo-title', todo.title);
+        todoCard.setAttribute('data-todo-category', todo.category);
+        todoCard.setAttribute('data-todo-notes', todo.notes);
+        todoCard.setAttribute('data-todo-due-date', todo.dueDate);
+        todoCard.setAttribute('data-todo-priority', todo.priority);
 
         todoCard.innerHTML = `
-            <div class="todo-card shadow" data-toggle="modal" data-target="#UDTodoModal" data-todo-id="${todo.id}" data-todo-title="${todo.title}" data-todo-category="${todo.category}" data-todo-notes="${todo.notes}" data-todo-due-date="${todo.dueDate}" data-todo-priority="${todo.priority}">
-                <div class="todo-id d-none">${todo.id}</div>
-                <div class="todo-header">
-                    <h3 class="todo-title fs-5">${todo.title}</h3>
-                </div>
-                <p class="fs-5 text-muted mb-2">${todo.category}</p>
-                <div class="todo-details">
-                    <p class="todo-description">${todo.notes}</p>
-                    <div class="todo-meta">
-                        <p class="todo-due-date text-muted mb-2">${todo.dueDate}</p>
-                        <p class="todo-priority todo-${todo.priority} text-light rounded-pill">${todo.priority}</p>
-                    </div>
+            <div class="todo-id d-none">${todo.id}</div>
+            <div class="todo-header">
+                <h3 class="todo-title fs-4">${todo.title}</h3>
+            </div>
+            <p class="fs-5 text-muted mb-2 fs-6">${todo.category}</p>
+            <div class="todo-details">
+                <p class="todo-description">${todo.notes}</p>
+                <div class="todo-meta">
+                    <p class="todo-due-date text-muted mb-2">${todo.dueDate}</p>
+                    <p class="todo-priority todo-${todo.priority} text-light rounded-pill">${todo.priority}</p>
                 </div>
             </div>
         `;
@@ -142,7 +173,7 @@ function displayToDoCards() {
     addListenersToDoCards();
 }
 
-// Function to add event listeners to ToDo cards
+// Function to add event listeners to displayed ToDo cards
 function addListenersToDoCards() {
     // Get all the ToDo cards
     const todoCards = document.querySelectorAll('.todo-card');
@@ -150,38 +181,82 @@ function addListenersToDoCards() {
     // Iterate over each ToDo card and attach event listener
     todoCards.forEach(todoCard => {
         todoCard.addEventListener('click', function() {
-            // Access data attributes of the clicked ToDo card
-            const todoId = this.dataset.todoId;
-            const todoTitle = this.dataset.todoTitle;
-            const todoCategory = this.dataset.todoCategory;
-            const todoNotes = this.dataset.todoNotes;
-            const todoDueDate = this.dataset.todoDueDate;
-            const todoPriority = this.dataset.todoPriority;
-
-            // Do whatever you need with the data attributes
-            console.log('Clicked ToDo Card:');
-            console.log('ID:', todoId);
-            console.log('Title:', todoTitle);
-            console.log('Category:', todoCategory);
-            console.log('Notes:', todoNotes);
-            console.log('Due Date:', todoDueDate);
-            console.log('Priority:', todoPriority);
-            // Populate modal with todo information
-            document.getElementById('ID').value = todoId;
-            document.getElementById('Title').value = todoTitle;
-            document.getElementById('Category').value = todoCategory;
-            document.getElementById('Notes').value = todoNotes;
-            document.getElementById('DueDate').value = formatStringToDate(todoDueDate);
-            document.getElementById('todopriority' + todoPriority).checked = true; // Select the correct radio button
+            populateTodoDetails(this);
         });
     });
 }
 
-// Get the update button element
-const updateBtn = document.getElementById('updateBtn');
+// Function to populate modal todo details
+function populateTodoDetails(element) {
+    // Access data attributes of the clicked ToDo card
+    const todoId = element.dataset.todoId;
+    const todoTitle = element.dataset.todoTitle;
+    const todoCategory = element.dataset.todoCategory;
+    const todoNotes = element.dataset.todoNotes;
+    const todoDueDate = element.dataset.todoDueDate;
+    const todoPriority = element.dataset.todoPriority;
 
-// Add event listener to the update button
-updateBtn.addEventListener('click', function() {
+    // Do whatever you need with the data attributes
+    console.log('Clicked ToDo Card:');
+    console.log('ID:', todoId);
+    console.log('Title:', todoTitle);
+    console.log('Category:', todoCategory);
+    console.log('Notes:', todoNotes);
+    console.log('Due Date:', todoDueDate);
+    console.log('Priority:', todoPriority);
+    // Populate modal with todo information
+    document.getElementById('ID').value = todoId;
+    document.getElementById('Title').value = todoTitle;
+    document.getElementById('Category').value = todoCategory;
+    document.getElementById('Notes').value = todoNotes;
+    document.getElementById('DueDate').value = formatStringToDate(todoDueDate);
+    document.getElementById('todopriority' + todoPriority).checked = true;
+}
+
+// Function to display categories
+function displayCategories() {
+    // Extract unique categories from todoList
+    const categories = [...new Set(todoList.map(todo => todo.category))];
+
+    // Get the <ul> element
+    const categoryList = document.querySelector('#category-collapse ul');
+
+    // Clear any existing content
+    categoryList.innerHTML = '';
+
+    // Loop through each category and create <li> elements
+    categories.forEach(category => {
+        // Create <li> element
+        const li = document.createElement('li');
+        li.classList.add('nav_item');
+
+        // Create <a> element
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = category; // Insert category text
+
+        // Append <a> to <li>
+        li.appendChild(a);
+
+        // Append <li> to <ul>
+        categoryList.appendChild(li);
+    });
+    
+    const categoryFilters = document.querySelectorAll('#category-collapse a');
+    // Event listeners for category filters
+    categoryFilters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            const category = this.textContent.trim(); // Get the category text
+            const filteredTodos = filterByCategory(category);
+            h1.textContent = "Category - " + filter.textContent;
+            // Call a function to display filtered todos
+            displayToDoCards(filteredTodos);
+        });
+    });
+}
+
+// Function to edit and update todo
+function editUpdateToDo() {
     // Check if the button text is 'Edit'
     if (updateBtn.innerText.trim() === 'Edit') {
         // Enable form fields and change button text to "Update"
@@ -217,8 +292,6 @@ updateBtn.addEventListener('click', function() {
                 todoList[index].priority = 'High';
             }
 
-            // Optionally, update the UI to reflect the changes
-
             // Disable form fields and change button text to "Edit"
             document.getElementById('Title').disabled = true;
             document.getElementById('Category').disabled = true;
@@ -230,19 +303,17 @@ updateBtn.addEventListener('click', function() {
 
             updateBtn.innerText = 'Edit';
             // Call the function to display ToDo cards
-            displayToDoCards();
+            displayToDoCards(todoList);
+            displayCategories();
             alert("To-Do updated successfully.");
         } else {
             console.log('ToDo object not found in todoList array.');
         }
     }
-});
+}
 
-// Get the delete button element
-const deleteBtn = document.getElementById('deleteBtn');
-
-// Add event listener to the delete button
-deleteBtn.addEventListener('click', function() {
+// Function to delete todo
+function deleteToDo() {
     // Prompt the user with a confirmation dialog
     const confirmation = confirm('Are you sure you want to delete this To-Do?');
 
@@ -259,8 +330,9 @@ deleteBtn.addEventListener('click', function() {
             // Remove the ToDo from the todoList array
             todoList.splice(indexToDelete, 1);
 
-            // Update the display of ToDo cards
-            displayToDoCards();
+            // Update the display of ToDo cards and categories
+            displayToDoCards(todoList);
+            displayCategories();
 
             // Optionally, notify the user that the ToDo was deleted
             alert('To-Do deleted successfully.');
@@ -270,4 +342,14 @@ deleteBtn.addEventListener('click', function() {
         }
         closeModal("UDTodoModal");
     }
-});
+}
+
+// Function to filter todoList based on category
+function filterByCategory(category) {
+    return todoList.filter(todo => todo.category === category);
+}
+
+// Function to filter todoList based on priority
+function filterByPriority(priority) {
+    return todoList.filter(todo => todo.priority === priority);
+}
