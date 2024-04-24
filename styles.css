@@ -117,7 +117,8 @@ a {
 }
 
 .nav_filter {
-    height: 168px;
+    height: max-content;
+    max-height: 168px;
     overflow-y: auto;
 }
 
@@ -252,6 +253,7 @@ html {
 .todo-card {
     margin: 10px; /* Set maximum width */
     width: 200px;
+    max-width: 300px;
     border-radius: 30px;
     padding: 20px;
     flex: 1 1;

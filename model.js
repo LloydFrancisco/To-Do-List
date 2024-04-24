@@ -1,5 +1,6 @@
 // Array to store ToDo objects
 var todoList = [];
+todoList = getToDoList();
 
 //Array Month Names
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -14,43 +15,19 @@ function ToDo(id, title, category, notes, dueDate, priority) {
     this.priority = priority;
 }
 
-var data = new ToDo(
-    generateUniqueId(),
-    "To-Do List App",
-    "BOOTCAMP",
-    "Create a To-Do List App with CRUD Operations without Database.",
-    "April 24, 2024",
-    "Medium"
-);
-
-var data1 = new ToDo(
-    generateUniqueId(),
-    "To-Do List App",
-    "BOOTCAMPING",
-    "Create a To-Do List App with CRUD Operations without Database.",
-    "April 25, 2024",
-    "Low"
-);
-
-var data2 = new ToDo(
-    generateUniqueId(),
-    "To-Do List App",
-    "BOOTCAMPdas",
-    "Create a To-Do List App with CRUD Operations without Database.",
-    "May 2, 2024",
-    "High"
-);
-
-todoList.push(data);
-todoList.push(data1);
-todoList.push(data2);
-todoList.push(data1);
-todoList.push(data2);
-todoList.push(data);
-todoList.push(data2);
 displayToDoCards(todoList);
 displayCategories();
 
+// Save todoList array to local storage
+function saveToDoList() {
+    localStorage.setItem('todoList', JSON.stringify(todoList));
+}
+
+// Retrieve todoList array from local storage
+function getToDoList() {
+    const savedList = localStorage.getItem('todoList');
+    return savedList ? JSON.parse(savedList) : [];
+}
 
 // Generate unique ID function for ToDo objects
 function generateUniqueId() {
@@ -172,6 +149,7 @@ function displayToDoCards(filteredTodos) {
         // Append the ToDo card to the section
         section.appendChild(todoCard);
     });
+    saveToDoList();
     // Add event listeners to newly created elements
     addListenersToDoCards();
 }

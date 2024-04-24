@@ -109,6 +109,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // Call linkColor function
   linkColor();
 
+  // Call minDate function
+  minDate();
+
   // Add click event listener to each link
   const links = document.querySelectorAll('.nav_link');
   links.forEach(link => link.addEventListener('click', linkColor));
