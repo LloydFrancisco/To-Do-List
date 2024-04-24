@@ -218,28 +218,22 @@ function displayCategories() {
     // Extract unique categories from todoList
     const categories = [...new Set(todoList.map(todo => todo.category))];
 
-    // Get the <ul> element
-    const categoryList = document.querySelector('#category-collapse ul');
+    // Get the collapse element
+    const categoryList = document.querySelector('#category-collapse');
 
     // Clear any existing content
     categoryList.innerHTML = '';
 
     // Loop through each category and create <li> elements
     categories.forEach(category => {
-        // Create <li> element
-        const li = document.createElement('li');
-        li.classList.add('nav_item');
-
         // Create <a> element
         const a = document.createElement('a');
         a.href = '#';
+        a.classList.add('nav_item');
         a.textContent = category; // Insert category text
 
-        // Append <a> to <li>
-        li.appendChild(a);
-
-        // Append <li> to <ul>
-        categoryList.appendChild(li);
+        // Append category to the element
+        categoryList.appendChild(a);
     });
     
     const categoryFilters = document.querySelectorAll('#category-collapse a');

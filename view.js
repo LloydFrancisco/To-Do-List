@@ -8,14 +8,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 // Check the screen width
 if (window.innerWidth > 515) {
   toggle.classList.add('bx-menu');
-  toggle.classList.add('bx-x');
 } else {
   // If screen width is 515 or less, change class back to 'bx-menu'
   toggle.classList.add('bx-menu');
 }
     // Add event listener for window resize
 window.addEventListener('resize', function() {
-
+  // Check the screen width
+  if (window.innerWidth < 515) {
+    
+  }
+  else {
+    
+  }
 });
     
     // Validate that all variables exist
@@ -26,7 +31,7 @@ window.addEventListener('resize', function() {
       list.classList.toggle('d-none');
       //show authors
       const author = this.querySelector(".authors");
-      author.classList.toggle('d-block');
+      author.classList.toggle('authors-move');
       toggled = false;
       console.log(toggled);
     // show navbar

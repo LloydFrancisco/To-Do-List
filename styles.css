@@ -106,6 +106,7 @@ a {
     transition: .5s;
     z-index: var(--z-fixed);
     display: none;
+    overflow-x: hidden;
 }
 
 
@@ -118,48 +119,49 @@ a {
     overflow: hidden;
 }
 
-.nav_list {
-    height: 100%;
+.nav_filter {
+    height: 30vh;
+    overflow-y: auto;
 }
 
-.nav_logo,
 .nav_link {
-    display: grid;
-    grid-template-columns: max-content max-content;
+    display: flex;
     align-items: center;
-    column-gap: 10px;
-    padding: .5rem 0 .5rem 1.5rem;
+    font-size: 1.25rem;
+    padding: .5rem 0 .5rem 1rem;
 }
 
 .nav_item {
     padding: 1rem;
     padding-left: 3rem;
-}
-
-.nav_item:hover {
-    background-color: rgba(255,255,255, 0.3);
-}
-
-.nav_item > a {
+    width: 100%;
     color: var(--accent-color);
+    display: block;
 }
 
-.nav_item:hover > a {
+.nav_item:hover, .nav_item:focus {
+    background-color: rgba(255,255,255, 0.3);
     color: var(--background-color);
 }
 
 .nav_logo {
-    margin-bottom: 2rem;
+    height: calc(var(--header-height) + 1rem);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
 }
 
 .nav_logo-icon {
-    font-size: 1.25rem;
+    font-size: 2rem;
     color: var(--secondary-color);
+    margin-right: 1.5rem;
 }
 
 .nav_logo-name {
     color: var(--secondary-color);
     font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .nav_link {
@@ -167,6 +169,7 @@ a {
     color: var(--accent-color);
     margin-bottom: 0rem;
     transition: .3s;
+    padding: 1rem 2rem;
 }
 
 .nav_link:hover, .nav_item:hover {
@@ -174,7 +177,8 @@ a {
 }
 
 .nav_icon {
-    font-size: 1.25rem;
+    font-size: 2rem;
+    margin-right: 1rem;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -223,7 +227,7 @@ a {
     .l-navbar {
         display: block;
         left: 0;
-        padding: 1rem 1rem 0 0;
+        padding: 0px;
     }
 
     .header_toggle {
@@ -285,16 +289,18 @@ div.modal-backdrop {
     transform: rotate(90deg); /* Add transition animation */
 }
 
-
+.authors-move {
+    translate: -100px 0px;
+}
 
 .authors {
+    transition: all 0.3s ease-in-out;
     position: absolute;
     transform: rotate(-90deg);
     bottom: 180px;
     left: -142px;
     width: max-content;
     color: var(--accent-color);
-    display: none;
 }
 
 .todo-description {

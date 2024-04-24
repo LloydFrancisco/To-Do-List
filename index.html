@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
-  <body classname="snippet-body" id="body-pd" class="body-pd">
-    <header class="header body-pd" id="header">
+  <body classname="snippet-body" id="body-pd" class="">
+    <header class="header" id="header">
       <section class="d-flex align-items-center">
         <div class="header_toggle d-flex align-items-center">
           <i class="bx" id="header-toggle"></i>
@@ -27,17 +27,17 @@
         </section>
       </section>
     </header>
-    <div class="l-navbar show" id="nav-bar">
+    <div class="l-navbar" id="nav-bar">
       <section class="authors">
         <p>Programmed by Lloyd Francisco and Yrrah Cabiles</p>
       </section>
       <nav class="nav">
           <div>
-              <a href="#" class="nav_logo">
+              <a href="#" class="nav_logo d-flex align-items-center">
                   <i class="bx bx-task nav_logo-icon"></i>
                   <span class="nav_logo-name">To-Do List App</span>
               </a>
-              <div class="nav_list overflow-y-scroll">
+              <div class="nav_list d-none">
                   <a href="#" class="home nav_link active">
                       <i class="bx bx-grid-alt nav_icon"></i>
                       <span class="nav_name">Home</span>
@@ -46,21 +46,17 @@
                       <i class="bx bx-chevron-right nav_icon"></i>
                       <span class="nav_name">Category</span>
                   </a>
-                  <div class="collapse" id="category-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                  <div class="collapse nav_filter" id="category-collapse">
 
-                    </ul>
                   </div>
                   <a href="#" class="nav_link collapsed" data-bs-toggle="collapse" data-bs-target="#priority-collapse" aria-expanded="false">
                     <i class="bx bx-chevron-right nav_icon"></i>
                     <span class="nav_name">Priority</span>
                   </a>
-                  <div class="collapse" id="priority-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                      <li class="nav_item"><a href="#">Low</a></li>
-                      <li class="nav_item"><a href="#">Medium</a></li>
-                      <li class="nav_item"><a href="#">High</a></li>
-                    </ul>
+                  <div class="collapse nav_filter" id="priority-collapse">
+                    <a href="#" class="nav_item">Low</a>
+                    <a href="#" class="nav_item">Medium</a>
+                    <a href="#" class="nav_item">High</a>
                   </div>
               </div>
           </div>
