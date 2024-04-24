@@ -95,6 +95,13 @@ a {
     width: 40px;
 }
 
+.nav_list {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: max-content;
+    padding-bottom: 0.75rem;
+}
+
 .l-navbar {
     position: fixed;
     top: 0;
@@ -106,11 +113,11 @@ a {
     transition: .5s;
     z-index: var(--z-fixed);
     display: none;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .nav_filter {
-    height: 30vh;
+    height: 168px;
     overflow-y: auto;
 }
 
@@ -118,7 +125,6 @@ a {
     display: flex;
     align-items: center;
     font-size: 1rem;
-    padding: .5rem 0 .5rem 1rem;
 }
 
 .nav_item {
@@ -137,7 +143,6 @@ a {
 .nav_logo {
     height: calc(var(--header-height) + 1rem);
     padding-left: 1rem;
-    margin-bottom: 1rem;
 }
 
 .nav_logo-icon {
@@ -215,6 +220,10 @@ a {
 
     .header_img img {
         width: 45px;
+    }
+
+    .nav_list {
+        max-height: calc(100vh - calc(var(--header-height) + 1rem));
     }
 
     .l-navbar {

@@ -1,6 +1,9 @@
 // Array to store ToDo objects
 var todoList = [];
 
+//Array Month Names
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 // Constructor function for ToDo object
 function ToDo(id, title, category, notes, dueDate, priority) {
     this.id = id;
@@ -218,35 +221,34 @@ function displayCategories() {
     // Extract unique categories from todoList
     const categories = [...new Set(todoList.map(todo => todo.category))];
 
-    // Get the collapse element
+    // Get the collapse elements
     const categoryList = document.querySelector('#category-collapse');
+    const categoriesList = document.querySelector('#categories-collapse');
 
     // Clear any existing content
     categoryList.innerHTML = '';
+    categoriesList.innerHTML = '';
 
-    // Loop through each category and create <li> elements
+    // Loop through each category and create <a> elements
     categories.forEach(category => {
-        // Create <a> element
+        // Create <a> elements for each category
         const a = document.createElement('a');
         a.href = '#';
         a.classList.add('nav_item');
         a.textContent = category; // Insert category text
 
-        // Append category to the element
-        categoryList.appendChild(a);
+        // Append category to the respective collapse element
+        categoryList.appendChild(a.cloneNode(true)); // Clone for the other collapse element
+        categoriesList.appendChild(a);
     });
-    
+
+    // Get all category filters
     const categoryFilters = document.querySelectorAll('#category-collapse a');
-    // Event listeners for category filters
-    categoryFilters.forEach(filter => {
-        filter.addEventListener('click', function() {
-            const category = this.textContent.trim(); // Get the category text
-            const filteredTodos = filterByCategory(category);
-            h1.textContent = "Category - " + filter.textContent;
-            // Call a function to display filtered todos
-            displayToDoCards(filteredTodos);
-        });
-    });
+    const categoriesFilters = document.querySelectorAll('#categories-collapse a');
+
+    // Add click event listeners for category buttons
+    categoryButtonsEvents(categoryFilters);
+    categoryButtonsEvents(categoriesFilters);
 }
 
 // Function to edit and update todo
@@ -338,6 +340,20 @@ function deleteToDo() {
     }
 }
 
+// Function to add event listeners to each category filter
+function categoryButtonsEvents(categoryfilter) {
+    // Event listeners for category filters
+    categoryfilter.forEach(filter => {
+        filter.addEventListener('click', function() {
+            const category = this.textContent.trim(); // Get the category text
+            const filteredTodos = filterByCategory(category);
+            h1.textContent = "Category - " + category; // Update heading
+            // Call a function to display filtered todos
+            displayToDoCards(filteredTodos);
+        });
+    });
+}
+
 // Function to filter todoList based on category
 function filterByCategory(category) {
     return todoList.filter(todo => todo.category === category);
@@ -346,4 +362,67 @@ function filterByCategory(category) {
 // Function to filter todoList based on priority
 function filterByPriority(priority) {
     return todoList.filter(todo => todo.priority === priority);
+}
+
+// set min date of input type="date"
+function minDate() {
+// Get today's date
+var today = new Date();
+
+// Format the date as yyyy-mm-dd
+var yyyy = today.getFullYear();
+var mm = String(today.getMonth() + 1).padStart(2, '0');
+var dd = String(today.getDate()).padStart(2, '0');
+
+var minDate = yyyy + '-' + mm + '-' + dd;
+
+// Set the minimum date for the due date input
+document.getElementById('todoDueDate').setAttribute('min', minDate);
+document.getElementById('DueDate').setAttribute('min', minDate);
+}
+
+// close a Modal
+function closeModal(modalID){
+// Close the Bootstrap modal without jQuery
+var modal = document.getElementById(modalID);
+modal.classList.remove('show');
+modal.setAttribute('aria-hidden', 'true');
+modal.setAttribute('style', 'display: none');
+
+var backdrop = document.querySelector('.modal-backdrop');
+backdrop.remove();
+}
+
+// Convert "April 24, 2024" to "2024-04-24"
+function formatStringToDate(dateString) {
+    // Split the date string into its components
+    const parts = dateString.split(' ');
+
+    // Extract the month, day, and year
+    const month = parts[0];
+    const day = parseInt(parts[1].replace(',', ''), 10);
+    const year = parseInt(parts[2], 10);
+
+    // Create a Date object with the extracted components + 1 for day discrepancies
+    const dateObject = new Date(year, monthNames.indexOf(month), day + 1);
+
+    // Format the date to "YYYY-MM-DD"
+    const formattedDate = dateObject.toISOString().split('T')[0];
+    return formattedDate;
+}
+
+// Convert "2024-04-24" to "April 4, 2024"
+function convertDateFormat(dateString) {
+    // Create a new Date object from the input date string
+    const date = new Date(dateString);
+
+    // Extract the day, month index, and year components
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    // Format the date string
+    const formattedDate = monthNames[monthIndex] + ' ' + day + ', ' + year;
+
+    return formattedDate;
 }

@@ -1,159 +1,123 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-    const showNavbar = (toggleId, navId, bodyId, headerId) =>{
-    const toggle = document.getElementById(toggleId),
-    nav = document.getElementById(navId),
-    bodypd = document.getElementById(bodyId),
-    headerpd = document.getElementById(headerId)
-      var toggled = true;
-// Check the screen width
-if (window.innerWidth < 515) {
+function setCollapse(toggle, navbar, filterCollapse) {
   toggle.setAttribute('data-bs-toggle', 'collapse');
   toggle.setAttribute('data-bs-target', '#filter-collapse');
   toggle.setAttribute('aria-expanded', 'false');
-} else {
-  // If screen width is 515 or less, change class back to 'bx-menu'
-  
+  if (navbar.classList.contains('show')) {
+    filterCollapse.classList.add('show');
+  }
 }
-    // Add event listener for window resize
-window.addEventListener('resize', function() {
 
-  // Check the screen width
-  if (window.innerWidth > 515) {
-    toggle.removeAttribute('data-bs-toggle', 'collapse');
-    toggle.removeAttribute('data-bs-target', '#filter-collapse');
-    toggle.removeAttribute('aria-expanded', 'false');
+function removeCollapse(toggle, filterCollapse) {
+  toggle.removeAttribute('data-bs-toggle');
+  toggle.removeAttribute('data-bs-target');
+  toggle.removeAttribute('aria-expanded');
+  filterCollapse.classList.remove('show');
+}
+
+function initialize(toggle, navbar,filterCollapse) {
+  // Set attributes based on screen width
+  if (window.innerWidth < 515) {
+    setCollapse(toggle, navbar, filterCollapse);
+  } else {
+    removeCollapse(toggle, filterCollapse);
   }
-  else {
-    toggle.setAttribute('data-bs-toggle', 'collapse');
-    toggle.setAttribute('data-bs-target', '#filter-collapse');
-    toggle.setAttribute('aria-expanded', 'false');
+}
+
+// Function to show navbar and handle window resize
+const showNavbar = () => {
+  // Get toggle, nav, bodypd, and headerpd elements
+  toggle = document.getElementById('header-toggle');
+  navbar = document.getElementById('nav-bar');
+  const bodypd = document.getElementById('body-pd');
+  const headerpd = document.getElementById('header');
+
+  // Validate that all variables exist
+  if (toggle && navbar && bodypd && headerpd) {
+      toggle.addEventListener('click', () => {
+          // Hide filter
+          const list = document.querySelector('#nav_list');
+          list.classList.toggle('d-none');
+          // Show authors
+          const author = document.querySelector(".authors");
+          author.classList.toggle('authors-move');
+          // Toggle navbar
+          navbar.classList.toggle('show');
+          // Change icon
+          toggle.classList.toggle('bx-x');
+          // Toggle body padding
+          bodypd.classList.toggle('body-pd');
+          // Toggle header padding
+          headerpd.classList.toggle('header-pd');
+      });
   }
-});
-    
-    // Validate that all variables exist
-    if(toggle && nav && bodypd && headerpd){
-    toggle.addEventListener('click', ()=>{
-      //hide filter
-      const list = this.querySelector('#nav_list');
-      list.classList.toggle('d-none');
-      //show authors
-      const author = this.querySelector(".authors");
-      author.classList.toggle('authors-move');
-      toggled = false;
-      console.log(toggled);
-    // show navbar
-    nav.classList.toggle('show')
-    // change icon
-    toggle.classList.toggle('bx-x')
-    // add padding to body
-    bodypd.classList.toggle('body-pd')
-    // add padding to header
-    headerpd.classList.toggle('header-pd')
-    })
-    }
-    }
-    
-    showNavbar('header-toggle','nav-bar','body-pd','header')
-    
-    /*===== LINK ACTIVE =====*/
-    const linkColor = document.querySelectorAll('.nav_link')
-    
-    function colorLink(){
-    if(linkColor){
-    linkColor.forEach(l=> l.classList.remove('active'))
-    this.classList.add('active')
-    }
-    }
-    linkColor.forEach(l=> l.addEventListener('click', colorLink))
-    
+}
+
+// Function to handle link colors
+const linkColor = () => {
+  const linkColors = document.querySelectorAll('.nav_link');
+  if (linkColors) {
+      linkColors.forEach(link => {
+          link.addEventListener('click', function() {
+              // Remove active class from all links
+              linkColors.forEach(link => link.classList.remove('active'));
+              // Add active class to the clicked link
+              this.classList.add('active');
+          });
+      });
+  }
+};
+
+// Function to prevent default behavior on links
+const preventDefaultLinks = () => {
+    const myLinks = document.querySelectorAll('a[href="#"]');
+    myLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+        });
     });
+};
+
+// Function to handle rotation of icon
+const rotateIcon = () => {
+    const links = document.querySelectorAll('.nav_link');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            const icon = this.querySelector('.nav_icon');
+            icon.classList.toggle('rotate-90');
+        });
+    });
+};
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+  var filterCollapse = document.getElementById('filter-collapse');
+  var navbar = document.getElementById('nav-bar');
+  var toggle = document.getElementById('header-toggle');
+
+  // Call initialize function
+  initialize(toggle, navbar, filterCollapse)
+
+  // Call preventDefaultLinks function
+  preventDefaultLinks();
   
-  var myLink = document.querySelectorAll('a[href="#"]');
-  myLink.forEach(function(link){
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-    });
-    
-    minDate();
+  // Call rotateIcon function
+  rotateIcon();
+  
+  // Call showNavbar function
+  showNavbar();
+
+  // Call linkColor function
+  linkColor();
+
+  // Add click event listener to each link
+  const links = document.querySelectorAll('.nav_link');
+  links.forEach(link => link.addEventListener('click', linkColor));
+
+  // Add event listener for window resize
+  window.addEventListener('resize', function() {
+    filterCollapse = document.getElementById('filter-collapse');
+    navbar = document.getElementById('nav-bar');
+    toggle = document.getElementById('header-toggle');
+    initialize(toggle, navbar,filterCollapse)
   });
-  
-  
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  
-  // set min date of input type="date"
-  function minDate() {
-    // Get today's date
-    var today = new Date();
-  
-    // Format the date as yyyy-mm-dd
-    var yyyy = today.getFullYear();
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var dd = String(today.getDate()).padStart(2, '0');
-  
-    var minDate = yyyy + '-' + mm + '-' + dd;
-  
-    // Set the minimum date for the due date input
-    document.getElementById('todoDueDate').setAttribute('min', minDate);
-    document.getElementById('DueDate').setAttribute('min', minDate);
-  }
-  
-  // close a Modal
-  function closeModal(modalID){
-    // Close the Bootstrap modal without jQuery
-    var modal = document.getElementById(modalID);
-    modal.classList.remove('show');
-    modal.setAttribute('aria-hidden', 'true');
-    modal.setAttribute('style', 'display: none');
-  
-    var backdrop = document.querySelector('.modal-backdrop');
-    backdrop.remove();
-  }
-  
-  // Convert "April 24, 2024" to "2024-04-24"
-  function formatStringToDate(dateString) {
-      // Split the date string into its components
-      const parts = dateString.split(' ');
-  
-      // Extract the month, day, and year
-      const month = parts[0];
-      const day = parseInt(parts[1].replace(',', ''), 10);
-      const year = parseInt(parts[2], 10);
-  
-      // Create a Date object with the extracted components + 1 for day discrepancies
-      const dateObject = new Date(year, monthNames.indexOf(month), day + 1);
-  
-      // Format the date to "YYYY-MM-DD"
-      const formattedDate = dateObject.toISOString().split('T')[0];
-      return formattedDate;
-  }
-  
-  // Convert "2024-04-24" to "April 4, 2024"
-  function convertDateFormat(dateString) {
-      // Create a new Date object from the input date string
-      const date = new Date(dateString);
-  
-      // Extract the day, month index, and year components
-      const day = date.getDate();
-      const monthIndex = date.getMonth();
-      const year = date.getFullYear();
-  
-      // Format the date string
-      const formattedDate = monthNames[monthIndex] + ' ' + day + ', ' + year;
-  
-      return formattedDate;
-  }
-  
-
-// Get all elements with class nav_link
-const links = document.querySelectorAll('.nav_link');
-
-// Loop through each element and add event listener
-links.forEach(link => {
-    link.addEventListener('click', function() {
-        // Get the icon element
-        const icon = this.querySelector('.nav_icon');
-
-        // Toggle the rotation class
-        icon.classList.toggle('rotate-90');
-    });
 });

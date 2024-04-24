@@ -25,10 +25,45 @@
       <section class="d-flex align-center">
         <section id="add" class="d-flex align-items-center" data-toggle="modal" data-target="#addTodoModal">
           <i class="bx bx-plus nav_icon m-0"></i>
-          <span class="nav_name d-none ms-2 d-sm-block">New</span>
         </section>
       </section>
     </header>
+    <!--Mobile Collapsible Menu-->
+    <div class="collapse" id="filter-collapse">
+      <!--Logo-->
+      <a href="#" class="nav_logo d-flex align-items-center">
+          <i class="bx bx-task nav_logo-icon"></i>
+          <span class="nav_logo-name">To-Do List App</span>
+      </a>
+      <!--Navigation-->
+      <div class="nav_list">
+        <!--Home Button-->
+        <a href="#" class="home nav_link active">
+            <i class="bx bx-grid-alt nav_icon"></i>
+            <span class="nav_name">Home</span>
+        </a>
+        <!--Categories Dropdown-->
+        <a href="#" class="nav_link collapsed" data-bs-toggle="collapse" data-bs-target="#categories-collapse" aria-expanded="false">
+            <i class="bx bx-chevron-right nav_icon"></i>
+            <span class="nav_name">Category</span>
+        </a>
+        <!--Categories Collapse-->
+        <div class="collapse nav_filter" id="categories-collapse">
+
+        </div>
+        <!--Priority Dropdown-->
+        <a href="#" class="nav_link collapsed" data-bs-toggle="collapse" data-bs-target="#priorities-collapse" aria-expanded="false">
+          <i class="bx bx-chevron-right nav_icon"></i>
+          <span class="nav_name">Priority</span>
+        </a>
+        <!--Priority Collapse-->
+        <div class="collapse nav_filter" id="priorities-collapse">
+          <a href="#" class="nav_item">Low</a>
+          <a href="#" class="nav_item">Medium</a>
+          <a href="#" class="nav_item">High</a>
+        </div>
+      </div>
+    </div>
     <!-- Sidebar -->
     <div class="l-navbar" id="nav-bar">
       <!-- Authors -->
@@ -55,7 +90,7 @@
               <span class="nav_name">Category</span>
           </a>
           <!--Categories Collapse-->
-          <div class="collapse nav_filter category-collapse" id="category-collapse">
+          <div class="collapse nav_filter" id="category-collapse">
 
           </div>
           <!--Priority Dropdown-->
