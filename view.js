@@ -6,20 +6,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
     headerpd = document.getElementById(headerId)
       var toggled = true;
 // Check the screen width
-if (window.innerWidth > 515) {
-  toggle.classList.add('bx-menu');
+if (window.innerWidth < 515) {
+  toggle.setAttribute('data-bs-toggle', 'collapse');
+  toggle.setAttribute('data-bs-target', '#filter-collapse');
+  toggle.setAttribute('aria-expanded', 'false');
 } else {
   // If screen width is 515 or less, change class back to 'bx-menu'
-  toggle.classList.add('bx-menu');
+  
 }
     // Add event listener for window resize
 window.addEventListener('resize', function() {
+
   // Check the screen width
-  if (window.innerWidth < 515) {
-    
+  if (window.innerWidth > 515) {
+    toggle.removeAttribute('data-bs-toggle', 'collapse');
+    toggle.removeAttribute('data-bs-target', '#filter-collapse');
+    toggle.removeAttribute('aria-expanded', 'false');
   }
   else {
-    
+    toggle.setAttribute('data-bs-toggle', 'collapse');
+    toggle.setAttribute('data-bs-target', '#filter-collapse');
+    toggle.setAttribute('aria-expanded', 'false');
   }
 });
     
@@ -27,7 +34,7 @@ window.addEventListener('resize', function() {
     if(toggle && nav && bodypd && headerpd){
     toggle.addEventListener('click', ()=>{
       //hide filter
-      const list = this.querySelector('.nav_list');
+      const list = this.querySelector('#nav_list');
       list.classList.toggle('d-none');
       //show authors
       const author = this.querySelector(".authors");
@@ -41,7 +48,7 @@ window.addEventListener('resize', function() {
     // add padding to body
     bodypd.classList.toggle('body-pd')
     // add padding to header
-    headerpd.classList.toggle('body-pd')
+    headerpd.classList.toggle('header-pd')
     })
     }
     }
